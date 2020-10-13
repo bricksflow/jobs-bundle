@@ -29,7 +29,7 @@ injecta = ">=0.7"
 pyfony-bundles = "0.2.*"
 console-bundle = "0.2.*"
 databricks-api = "0.3.*"
-pygit2 = "0.28.*"
+pygit2 = "1.3.*"
 
 [tool.poetry.dev-dependencies]
 pylint = "2.4.*"
