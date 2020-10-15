@@ -1,3 +1,4 @@
+import sys
 from argparse import ArgumentParser, Namespace
 from logging import Logger
 from box import Box
@@ -38,7 +39,7 @@ class JobCreateOrUpdateCommand(ConsoleCommand):
     def run(self, inputArgs: Namespace):
         if inputArgs.identifier not in self.__jobsRawConfig:
             self.__logger.error('No job found for {}. Maybe you forgot to add the configuration under jobsbundle.jobs?'.format(inputArgs.identifier))
-            return
+            sys.exit(1)
 
         jobRawConfig = self.__jobsRawConfig[inputArgs.identifier].to_dict()
         jobConfig = self.__valuesFiller.fill(

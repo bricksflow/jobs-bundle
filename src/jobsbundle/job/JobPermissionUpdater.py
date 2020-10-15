@@ -1,3 +1,4 @@
+import sys
 from logging import Logger
 import requests
 import json
@@ -16,15 +17,16 @@ class JobPermissionUpdater:
         self.__token = databricksToken
 
     def run(self, configPermission, jobId):
-
         resOfChange = self.__changePermissions(configPermission, jobId)
-        if resOfChange.status_code == 200:
-            self.__logger.info(f'Permissions for job ID {jobId} updated')
-            resOfCheck = self.__checkPermissions(jobId)
-            self.__logger.info(f'Current permissions: {resOfCheck.text}')
-        else:
+
+        if resOfChange.status_code != 200:
             self.__logger.error(f'Permissions for job ID {jobId} were not changed')
             self.__logger.error(resOfChange.text)
+            sys.exit(1)
+
+        self.__logger.info(f'Permissions for job ID {jobId} updated')
+        resOfCheck = self.__checkPermissions(jobId)
+        self.__logger.info(f'Current permissions: {resOfCheck.text}')
 
     def __changePermissions(self, configPermission, jobId):
         self.__logger.info(f'Changing permissions for job ID {jobId}')
