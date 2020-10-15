@@ -36,6 +36,13 @@ services:
     tags:
       - 'console.command'
 
+  jobsbundle.job.JobPermissionUpdaterCommand:
+    arguments:
+      - '%jobsbundle.jobs%'
+      - '@consolebundle.logger'
+    tags:
+      - 'console.command'
+
   jobsbundle.job.StreamingJobCreateOrUpdateCommand:
     arguments:
       - '%jobsbundle.jobs%'
