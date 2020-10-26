@@ -43,6 +43,14 @@ services:
     tags:
       - 'console.command'
 
+  jobsbundle.job.StreamingJobCreateCommand:
+    arguments:
+      - '%jobsbundle.jobs%'
+      - '@consolebundle.logger'
+      - '@jobsbundle.databricksApi'
+    tags:
+      - 'console.command'
+
   jobsbundle.job.StreamingJobCreateOrUpdateCommand:
     arguments:
       - '%jobsbundle.jobs%'
