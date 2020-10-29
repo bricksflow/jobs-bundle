@@ -32,13 +32,23 @@ class JobPermissionUpdater:
         self.__logger.info(f'Changing permissions for job ID {jobId}')
         url = self.__createUrl(jobId)
         auth = self.__createAuth()
-        accessList = [{'user_name': user, 'permission_level': configPermission['permissionLevel']}
-                      for user in configPermission['usersNames']]
-        data = {"object_id": f"/jobs/{jobId}",
-                "object_type": "job",
-                "access_control_list": accessList
-                }
+
+        data = {
+            "object_id": f"/jobs/{jobId}",
+            "object_type": "job",
+            "access_control_list": self.__createAccessControlList(configPermission)
+        }
+
         return requests.patch(url, data=json.dumps(data), headers=auth)
+
+    def __createAccessControlList(self, configPermission):
+        if 'usersNames' in configPermission:
+            return [{'user_name': userName, 'permission_level': configPermission['permissionLevel']} for userName in configPermission['usersNames']]
+
+        if 'groups' in configPermission:
+            return [{'group_name': groupName, 'permission_level': configPermission['permissionLevel']} for groupName in configPermission['groups']]
+
+        raise Exception(f'Invalid permissions: {configPermission}')
 
     def __checkPermissions(self, jobId):
         self.__logger.info(f'Checking the results after update')
