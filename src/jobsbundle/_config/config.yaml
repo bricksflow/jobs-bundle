@@ -9,12 +9,22 @@ services:
 
   jobsbundle.git.CurrentRepositoryFactory:
 
-  jobsbundle.databricksApi:
-    class: databricks_api.databricks.DatabricksAPI
+  jobsbundle.databricks.client:
+    class: databricks_cli.sdk.ApiClient
     autowire: False
     arguments:
       host: '%jobsbundle.databricks.host%'
       token: '%jobsbundle.databricks.token%'
+
+  jobsbundle.databricks.jobs_api:
+    class: databricks_cli.jobs.api.JobsApi
+    arguments:
+      - '@jobsbundle.databricks.client'
+
+  jobsbundle.databricks.runs_api:
+    class: databricks_cli.runs.api.RunsApi
+    arguments:
+      - '@jobsbundle.databricks.client'
 
   jobsbundle.job.ValuesFiller:
     arguments:
@@ -24,7 +34,7 @@ services:
     arguments:
       - '%jobsbundle.jobs%'
       - '@consolebundle.logger'
-      - '@jobsbundle.databricksApi'
+      - '@jobsbundle.databricks.jobs_api'
     tags:
       - 'console.command'
 
@@ -32,7 +42,7 @@ services:
     arguments:
       - '%jobsbundle.jobs%'
       - '@consolebundle.logger'
-      - '@jobsbundle.databricksApi'
+      - '@jobsbundle.databricks.jobs_api'
     tags:
       - 'console.command'
 
@@ -47,7 +57,7 @@ services:
     arguments:
       - '%jobsbundle.jobs%'
       - '@consolebundle.logger'
-      - '@jobsbundle.databricksApi'
+      - '@jobsbundle.databricks.jobs_api'
     tags:
       - 'console.command'
 
@@ -55,7 +65,7 @@ services:
     arguments:
       - '%jobsbundle.jobs%'
       - '@consolebundle.logger'
-      - '@jobsbundle.databricksApi'
+      - '@jobsbundle.databricks.jobs_api'
     tags:
       - 'console.command'
 
@@ -68,4 +78,4 @@ services:
   jobsbundle.job.JobIdFinder:
     arguments:
       - '@consolebundle.logger'
-      - '@jobsbundle.databricksApi'
+      - '@jobsbundle.databricks.jobs_api'

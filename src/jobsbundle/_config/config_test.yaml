@@ -1,8 +1,8 @@
 parameters:
   jobsbundle:
     databricks:
-      host: ''
-      token: ''
+      host: 'https://dbc-123.cloud.databricks.com'
+      token: 'abcd123456'
       notifications:
         on_failure: []
 
@@ -12,17 +12,17 @@ parameters:
 
         new_cluster:
           spark_version: '6.5.x-scala2.11'
-          node_type_id: '{nodeType}'
+          node_type_id: '{node_type}'
         notebook_task:
-          notebook_path: '/my-project_{currentBranch}/main'
+          notebook_path: '/my-project_{current_branch}/main'
 
-      permissionsDefault:
-        usersNames: '%jobsbundle.databricks.notifications.on_failure%'
-        permissionLevel: 'CAN_MANAGE'
+      permissions_default:
+        users_names: '%jobsbundle.databricks.notifications.on_failure%'
+        permission_level: 'CAN_MANAGE'
 
     jobs:
       main:
         template: '%jobsbundle.templates.default%'
         values:
-          nodeType: 'i3.2xlarge'
-        permission: '%jobsbundle.templates.permissionsDefault%'
+          node_type: 'i3.2xlarge'
+        permission: '%jobsbundle.templates.permissions_default%'

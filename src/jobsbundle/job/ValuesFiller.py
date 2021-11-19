@@ -1,29 +1,29 @@
 from box import Box
 from jobsbundle.git.CurrentBranchResolver import CurrentBranchResolver
-from jobsbundle.job.fillTemplate import fillTemplate
+from jobsbundle.job.template_filler import fill_template
+
 
 class ValuesFiller:
-
     def __init__(
         self,
-        currentBranchResolver: CurrentBranchResolver,
+        current_branch_resolver: CurrentBranchResolver,
     ):
-        self.__currentBranchResolver = currentBranchResolver
+        self.__current_branch_resolver = current_branch_resolver
 
     def fill(self, template: dict, values: dict, identifier: str) -> Box:
-        values['identifier'] = identifier
-        values['currentBranch'] = self.__currentBranchResolver.resolve()
+        values["identifier"] = identifier
+        values["current_branch"] = self.__current_branch_resolver.resolve()
 
-        def fillDictTemplate(value):
+        def fill_dict_template(value):
             if isinstance(value, dict):
-                return {k: fillDictTemplate(v) for k, v in value.items()}
+                return {k: fill_dict_template(v) for k, v in value.items()}
 
             if isinstance(value, list):
-                return list(map(fillDictTemplate, value))
+                return list(map(fill_dict_template, value))
 
             if isinstance(value, str):
-                return fillTemplate(value, values)
+                return fill_template(value, values)
 
             return value
 
-        return Box({k: fillDictTemplate(v) for k, v in template.items()})
+        return Box({k: fill_dict_template(v) for k, v in template.items()})

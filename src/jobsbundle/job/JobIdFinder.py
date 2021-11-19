@@ -1,26 +1,25 @@
 from logging import Logger
-from databricks_api.databricks import DatabricksAPI
+from databricks_cli.jobs.api import JobsApi
 
 
 class JobIdFinder:
-
     def __init__(
         self,
         logger: Logger,
-        dbxApi: DatabricksAPI,
+        jobs_api: JobsApi,
     ):
         self.__logger = logger
-        self.__dbxApi = dbxApi
+        self.__jobs_api = jobs_api
 
-    def find(self, jobName: str):
-        jobsResponse = self.__dbxApi.jobs.list_jobs()
+    def find(self, job_name: str):
+        jobs_response = self.__jobs_api.list_jobs()
 
-        if 'jobs' not in jobsResponse:
-            self.__logger.info('No jobs exist')
+        if "jobs" not in jobs_response:
+            self.__logger.info("No jobs exist")
             return None
 
-        jobs = jobsResponse['jobs']
+        jobs = jobs_response["jobs"]
         for job in jobs:
-            if job['settings']['name'] == jobName:
-                return job['job_id']
+            if job["settings"]["name"] == job_name:
+                return job["job_id"]
         return None

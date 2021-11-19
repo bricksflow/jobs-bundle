@@ -3,46 +3,54 @@ from argparse import ArgumentParser, Namespace
 from logging import Logger
 from box import Box
 from consolebundle.ConsoleCommand import ConsoleCommand
-from databricks_api.databricks import DatabricksAPI
+from databricks_cli.jobs.api import JobsApi
+from jobsbundle.job.JobIdFinder import JobIdFinder
 from jobsbundle.job.ValuesFiller import ValuesFiller
 
-class JobCreatorCommand(ConsoleCommand):
 
+class JobCreatorCommand(ConsoleCommand):
     def __init__(
         self,
-        jobsRawConfig: Box,
+        jobs_raw_config: Box,
         logger: Logger,
-        dbxApi: DatabricksAPI,
-        valuesFiller: ValuesFiller,
+        jobs_api: JobsApi,
+        job_id_finder: JobIdFinder,
+        values_filler: ValuesFiller,
     ):
-        self.__jobsRawConfig = jobsRawConfig
+        self.__jobs_raw_config = jobs_raw_config
         self.__logger = logger
-        self.__dbxApi = dbxApi
-        self.__valuesFiller = valuesFiller
+        self.__jobs_api = jobs_api
+        self.__job_id_finder = job_id_finder
+        self.__values_filler = values_filler
 
-    def getCommand(self) -> str:
-        return 'databricks:job:create'
+    def get_command(self) -> str:
+        return "databricks:job:create"
 
-    def getDescription(self):
-        return 'Create a new Databricks job based on given job identifier'
+    def get_description(self):
+        return "Create a new Databricks job based on given job identifier"
 
-    def configure(self, argumentParser: ArgumentParser):
-        argumentParser.add_argument(dest='identifier', help='Job identifier')
+    def configure(self, argument_parser: ArgumentParser):
+        argument_parser.add_argument(dest="identifier", help="Job identifier")
 
-    def run(self, inputArgs: Namespace):
-        if inputArgs.identifier not in self.__jobsRawConfig:
-            self.__logger.error('No job found for {}. Maybe you forgot to add the configuration under jobsbundle.jobs?'.format(inputArgs.identifier))
+    def run(self, input_args: Namespace):
+        if input_args.identifier not in self.__jobs_raw_config:
+            self.__logger.error(
+                f"No job found for {input_args.identifier}. Maybe you forgot to add the configuration under jobsbundle.jobs?"
+            )
             sys.exit(1)
 
-        jobRawConfig = self.__jobsRawConfig[inputArgs.identifier].to_json()
-        jobConfig = self.__valuesFiller.fill(
-            jobRawConfig['template'],
-            jobRawConfig['values'],
-            inputArgs.identifier
-        )
+        job_raw_config = self.__jobs_raw_config[input_args.identifier].to_dict()
+        values = job_raw_config["values"] if "values" in job_raw_config else {}
+        job_config = self.__values_filler.fill(job_raw_config["template"], values, input_args.identifier)
 
-        self.__logger.info(f'Creating job {inputArgs.identifier} with name "{jobConfig.name}"')
+        job_id = self.__job_id_finder.find(job_config.name)
 
-        self.__dbxApi.jobs.create_job(**jobConfig)
+        if job_id:
+            self.__logger.error(f'Job with name "{job_config.name}" already exist with id {job_id}, exiting')
+            sys.exit(1)
 
-        self.__logger.info(f'Job successfully created')
+        self.__logger.info(f'Creating job {input_args.identifier} with name "{job_config.name}"')
+
+        self.__jobs_api.create_job(job_config)
+
+        self.__logger.info("Job successfully created")
