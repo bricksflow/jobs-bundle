@@ -6,7 +6,6 @@ from consolebundle.ConsoleCommand import ConsoleCommand
 from jobsbundle.job.ValuesFiller import ValuesFiller
 from databricks_cli.jobs.api import JobsApi
 from jobsbundle.job.JobIdFinder import JobIdFinder
-from jobsbundle.job.JobPermissionUpdater import JobPermissionUpdater
 
 
 class JobCreateOrUpdateCommand(ConsoleCommand):
@@ -17,14 +16,12 @@ class JobCreateOrUpdateCommand(ConsoleCommand):
         jobs_api: JobsApi,
         values_filler: ValuesFiller,
         job_id_finder: JobIdFinder,
-        permission_updater: JobPermissionUpdater,
     ):
         self.__jobs_raw_config = jobs_raw_config
         self.__logger = logger
         self.__jobs_api = jobs_api
         self.__values_filler = values_filler
         self.__job_id_finder = job_id_finder
-        self.__permission_updater = permission_updater
 
     def get_command(self) -> str:
         return "dbx:job:create-or-update"
@@ -57,6 +54,3 @@ class JobCreateOrUpdateCommand(ConsoleCommand):
             self.__logger.info(f'No existing job with name "{job_config.name}" found, creating new one')
             job_id = self.__jobs_api.create_job(job_config.to_dict())["job_id"]
             self.__logger.info(f"Job with ID {job_id} successfully created")
-
-        if "permission" in job_raw_config:
-            self.__permission_updater.run(job_raw_config["permission"], job_id)

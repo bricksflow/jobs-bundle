@@ -46,13 +46,6 @@ services:
     tags:
       - 'console.command'
 
-  jobsbundle.job.JobPermissionUpdaterCommand:
-    arguments:
-      - '%jobsbundle.jobs%'
-      - '@consolebundle.logger'
-    tags:
-      - 'console.command'
-
   jobsbundle.job.StreamingJobCreateCommand:
     arguments:
       - '%jobsbundle.jobs%'
@@ -68,12 +61,6 @@ services:
       - '@jobsbundle.databricks.jobs_api'
     tags:
       - 'console.command'
-
-  jobsbundle.job.JobPermissionUpdater:
-    arguments:
-      - '@consolebundle.logger'
-      - '%jobsbundle.databricks.host%'
-      - '%jobsbundle.databricks.token%'
 
   jobsbundle.job.JobIdFinder:
     arguments:

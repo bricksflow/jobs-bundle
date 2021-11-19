@@ -16,13 +16,8 @@ parameters:
         notebook_task:
           notebook_path: '/my-project_{current_branch}/main'
 
-      permissions_default:
-        users_names: '%jobsbundle.databricks.notifications.on_failure%'
-        permission_level: 'CAN_MANAGE'
-
     jobs:
       main:
         template: '%jobsbundle.templates.default%'
         values:
           node_type: 'i3.2xlarge'
-        permission: '%jobsbundle.templates.permissions_default%'

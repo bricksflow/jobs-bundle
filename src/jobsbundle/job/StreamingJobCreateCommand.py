@@ -4,18 +4,14 @@ from box import Box
 from consolebundle.ConsoleCommand import ConsoleCommand
 from jobsbundle.job.ValuesFiller import ValuesFiller
 from databricks_cli.jobs.api import JobsApi
-from jobsbundle.job.JobPermissionUpdater import JobPermissionUpdater
 
 
 class StreamingJobCreateCommand(ConsoleCommand):
-    def __init__(
-        self, jobs_raw_config: Box, logger: Logger, jobs_api: JobsApi, values_filler: ValuesFiller, permission_updater: JobPermissionUpdater
-    ):
+    def __init__(self, jobs_raw_config: Box, logger: Logger, jobs_api: JobsApi, values_filler: ValuesFiller):
         self.__jobs_raw_config = jobs_raw_config
         self.__logger = logger
         self.__jobs_api = jobs_api
         self.__values_filler = values_filler
-        self.__permission_updater = permission_updater
 
     def get_command(self) -> str:
         return "dbx:job:streaming-create"
@@ -42,6 +38,3 @@ class StreamingJobCreateCommand(ConsoleCommand):
 
         self.__jobs_api.run_now(job_id)
         self.__logger.info(f"Job with ID {job_id} successfully run")
-
-        if "permission" in job_raw_config:
-            self.__permission_updater.run(job_raw_config["permission"], job_id)
