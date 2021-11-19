@@ -27,7 +27,7 @@ class JobCreateOrUpdateCommand(ConsoleCommand):
         self.__permission_updater = permission_updater
 
     def get_command(self) -> str:
-        return "databricks:job:create-or-update"
+        return "dbx:job:create-or-update"
 
     def get_description(self):
         return "Create new or update existing Databricks job based on given job identifier"

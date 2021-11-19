@@ -24,7 +24,7 @@ class JobPermissionUpdaterCommand(ConsoleCommand):
         self.__permission_updater = permission_updater
 
     def get_command(self) -> str:
-        return "databricks:job:set-permissions"
+        return "dbx:job:set-permissions"
 
     def get_description(self):
         return "Update permissions for an existing Databricks job based on given job identifier"

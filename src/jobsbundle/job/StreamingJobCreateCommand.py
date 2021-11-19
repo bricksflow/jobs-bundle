@@ -18,7 +18,7 @@ class StreamingJobCreateCommand(ConsoleCommand):
         self.__permission_updater = permission_updater
 
     def get_command(self) -> str:
-        return "databricks:job:streaming-create"
+        return "dbx:job:streaming-create"
 
     def get_description(self):
         return "Creates new Databricks streaming job based on given job identifier"

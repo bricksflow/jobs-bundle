@@ -24,7 +24,7 @@ class JobCreatorCommand(ConsoleCommand):
         self.__values_filler = values_filler
 
     def get_command(self) -> str:
-        return "databricks:job:create"
+        return "dbx:job:create"
 
     def get_description(self):
         return "Create a new Databricks job based on given job identifier"
