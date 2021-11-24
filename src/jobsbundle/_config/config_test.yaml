@@ -6,18 +6,12 @@ parameters:
       notifications:
         on_failure: []
 
-    templates:
-      default:
+    jobs:
+      main:
         name: '{identifier} (%kernel.environment%)'
 
         new_cluster:
-          spark_version: '6.5.x-scala2.11'
-          node_type_id: '{node_type}'
+          spark_version: '9.1.x-scala2.12'
+          node_type_id: 'i3.2xlarge'
         notebook_task:
-          notebook_path: '/my-project_{current_branch}/main'
-
-    jobs:
-      main:
-        template: '%jobsbundle.templates.default%'
-        values:
-          node_type: 'i3.2xlarge'
+          notebook_path: '/my-project/main'

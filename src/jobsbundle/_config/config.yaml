@@ -1,14 +1,12 @@
 parameters:
   jobsbundle:
     databricks:
-    templates:
+      routes:
+        job.detail: "/?#job/{job_id}"
+
     jobs:
 
 services:
-  jobsbundle.git.CurrentBranchResolver:
-
-  jobsbundle.git.CurrentRepositoryFactory:
-
   jobsbundle.databricks.client:
     class: databricks_cli.sdk.ApiClient
     autowire: False
@@ -27,8 +25,6 @@ services:
       - '@jobsbundle.databricks.client'
 
   jobsbundle.job.ValuesFiller:
-    arguments:
-      - '@jobsbundle.git.CurrentBranchResolver'
 
   jobsbundle.job.JobCreatorCommand:
     arguments:
@@ -45,6 +41,11 @@ services:
       - '@jobsbundle.databricks.jobs_api'
     tags:
       - 'console.command'
+
+  jobsbundle.job.Router:
+    arguments:
+      - '%jobsbundle.databricks.host%'
+      - '%jobsbundle.databricks.routes%'
 
   jobsbundle.job.StreamingJobCreateCommand:
     arguments:
