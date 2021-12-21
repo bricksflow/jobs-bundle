@@ -51,7 +51,7 @@ class JobCreateOrUpdateCommand(ConsoleCommand):
         job_id = self.__job_id_finder.find(job_config.name)
 
         if job_id:
-            self.__logger.info(f"Existing job found with ID: {job_id}, updating")
+            self.__logger.info(f'Existing job found for "{input_args.identifier}" (ID: {job_id}), updating')
             self.__jobs_api.reset_job({"job_id": job_id, "new_settings": job_config.to_dict()})
             job_url = self.__router.generate_url("job.detail", job_id=job_id)
             self.__logger.info(f"Job successfully updated {job_url}")
