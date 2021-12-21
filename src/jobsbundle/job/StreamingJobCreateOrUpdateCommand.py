@@ -22,7 +22,7 @@ class StreamingJobCreateOrUpdateCommand(ConsoleCommand):
         job_id_finder: JobIdFinder,
         router: Router,
     ):
-        self.__jobs_raw_config = jobs_raw_config
+        self.__jobs_raw_config = jobs_raw_config or Box({})
         self.__logger = logger
         self.__jobs_api = jobs_api
         self.__runs_api = runs_api

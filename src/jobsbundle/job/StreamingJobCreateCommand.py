@@ -10,7 +10,7 @@ from databricks_cli.jobs.api import JobsApi
 
 class StreamingJobCreateCommand(ConsoleCommand):
     def __init__(self, jobs_raw_config: Box, logger: Logger, jobs_api: JobsApi, values_filler: ValuesFiller, router: Router):
-        self.__jobs_raw_config = jobs_raw_config
+        self.__jobs_raw_config = jobs_raw_config or Box({})
         self.__logger = logger
         self.__jobs_api = jobs_api
         self.__values_filler = values_filler

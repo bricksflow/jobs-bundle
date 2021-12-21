@@ -13,7 +13,7 @@ class AllJobsCreatorCommand(ConsoleCommand):
         logger: Logger,
         job_create_or_update_command: JobCreateOrUpdateCommand,
     ):
-        self.__jobs_raw_config = jobs_raw_config
+        self.__jobs_raw_config = jobs_raw_config or Box({})
         self.__logger = logger
         self.__job_create_or_update_command = job_create_or_update_command
 
