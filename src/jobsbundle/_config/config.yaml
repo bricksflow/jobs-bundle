@@ -24,6 +24,13 @@ services:
     arguments:
       - '@jobsbundle.databricks.client'
 
+  jobsbundle.job.AllJobsCreatorCommand:
+    arguments:
+      - '%jobsbundle.jobs%'
+      - '@consolebundle.logger'
+    tags:
+      - 'console.command'
+
   jobsbundle.job.ValuesFiller:
 
   jobsbundle.job.JobCreatorCommand:
