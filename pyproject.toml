@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "jobs-bundle"
-version = "0.5.1"
+version = "0.5.2"
 description = "Databricks jobs management bundle for the Daipe Framework"
 readme = "README.md"
 repository = "https://github.com/daipe-ai/jobs-bundle"
