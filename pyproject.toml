@@ -24,14 +24,13 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
+python = "^3.8"
 python-box = "^3.4"
-python = "^3.7"
 pyfony-bundles = "0.4.*"
 console-bundle = "^0.5"
 databricks-cli = ">=0.16.0"
 
 [tool.poetry.dev-dependencies]
-pytest = "^5.2"
 flake8 = "^3.9.0"
 black = "^20.8b1"
 flake8-fixme = "^1.1.1"
